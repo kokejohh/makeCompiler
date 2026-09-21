@@ -18,7 +18,6 @@ fn convertCode(code: []const u8) void {
     var arena_allocator = arena.allocator();
 
     const token_list: *std.ArrayList(Token) = parse_script.parseToTokens(&arena_allocator, code) catch |err| {
-        //const token_list = parse_script.parse_to_tokens(code, &arena_allocator) catch |err| {
         std.debug.print("Error {}\n", .{err});
         return;
     };
