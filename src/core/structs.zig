@@ -27,7 +27,7 @@ pub const Token = struct {
         });
     }
 
-    pub fn is_type(self: *const Token, tokenType: TokenType) bool {
+    pub fn isType(self: *const Token, tokenType: TokenType) bool {
         return self.Type == tokenType;
     }
 };
