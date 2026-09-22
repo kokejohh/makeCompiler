@@ -28,7 +28,6 @@ pub fn parseToTokens(allocator: *std.mem.Allocator, code: []const u8) !*std.Arra
     const STRING_LENGTH: usize = code.len;
     while (parse_data.character_index < STRING_LENGTH) {
         try processCharacter(allocator, &parse_data);
-        //break;
     }
     //std.debug.print("{s}Done{s}\n", .{ printing.CYAN, printing_script.RESET });
     return token_list;
@@ -90,7 +89,7 @@ fn processCharacter(allocator: *std.mem.Allocator, parse_data: *ParseData) !void
 fn getToken(allocator: *std.mem.Allocator, parse_data: *ParseData) !Token {
     const current_char: u8 = parse_data.code[parse_data.character_index];
 
-    if (current_char == '*') {
+    if (current_char == '"') {
         return readString(allocator, parse_data);
     }
     if (current_char == '\'') {
