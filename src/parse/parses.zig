@@ -12,7 +12,7 @@ const ParseError = error_script.ParseError;
 pub fn parseToTokens(allocator: *std.mem.Allocator, code: []const u8) !*std.ArrayList(Token) {
     //std.debug.print("\t{s}Parsing{s}\t\t\t\t", .{ printing_script.GREY, printing_script.RESET });
 
-    const token_list = try allocator.*.create(std.ArrayList(Token));
+    const token_list = try allocator.create(std.ArrayList(Token));
     //token_list.* = try std.ArrayList(Token).initCapacity(allocator.*, 0);
     token_list.* = std.ArrayList(Token).empty;
 
@@ -36,7 +36,7 @@ pub fn parseToTokens(allocator: *std.mem.Allocator, code: []const u8) !*std.Arra
 fn shouldSkip(allocator: *std.mem.Allocator, parse_data: *ParseData) !bool {
     parse_data.char_count += 1;
     if (parse_data.last_token != null) {
-        if (parse_data.last_token.?.Type == TokenType.Comment) {
+        if (parse_data.last_token.?.type == TokenType.Comment) {
             parse_data.was_comment = true;
         }
     }
@@ -49,7 +49,7 @@ fn shouldSkip(allocator: *std.mem.Allocator, parse_data: *ParseData) !bool {
                 allocator.*,
                 Token{
                     .text = "",
-                    .Type = TokenType.EndComment,
+                    .type = TokenType.EndComment,
                     .line_number = parse_data.line_count,
                     .char_number = parse_data.char_count,
                 },
@@ -118,7 +118,7 @@ fn readString(allocator: *std.mem.Allocator, parse_data: *ParseData) !Token {
 
             return Token{
                 .text = text,
-                .Type = TokenType.StringValue,
+                .type = TokenType.StringValue,
                 .line_number = parse_data.line_count,
                 .char_number = parse_data.char_count,
             };
@@ -137,7 +137,7 @@ fn readSeparator(allocator: *std.mem.Allocator, parse_data: *ParseData) !Token {
 
     return Token{
         .text = tokenType,
-        .Type = parse_util_script.getTokenType(tokenType),
+        .type = parse_util_script.getTokenType(tokenType),
         .line_number = parse_data.line_count,
         .char_number = parse_data.char_count,
     };
@@ -165,7 +165,7 @@ fn readChar(allocator: *std.mem.Allocator, parse_data: *ParseData) !Token {
 
     return Token{
         .text = char_value,
-        .Type = TokenType.CharValue,
+        .type = TokenType.CharValue,
         .line_number = parse_data.line_count,
         .char_number = parse_data.char_count,
     };
@@ -190,7 +190,7 @@ fn readOperator(allocator: *std.mem.Allocator, parse_data: *ParseData) !Token {
     const text: []u8 = try text_builder.toOwnedSlice(allocator.*);
     return Token{
         .text = text,
-        .Type = parse_util_script.getTokenType(text),
+        .type = parse_util_script.getTokenType(text),
         .line_number = parse_data.line_count,
         .char_number = parse_data.char_count,
     };
@@ -213,7 +213,7 @@ fn readWord(allocator: *std.mem.Allocator, parse_data: *ParseData) !Token {
     const text: []u8 = try text_builder.toOwnedSlice(allocator.*);
     return Token{
         .text = text,
-        .Type = parse_util_script.getTokenType(text),
+        .type = parse_util_script.getTokenType(text),
         .line_number = parse_data.line_count,
         .char_number = parse_data.char_count,
     };

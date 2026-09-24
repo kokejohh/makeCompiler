@@ -4,3 +4,15 @@ pub const ParseError = error{
     UnexpectedValue,
     UnterminatedChar,
 };
+
+pub const ASTError = error{
+    InfiniteWhileLoop,
+    IndexOutOfRange,
+    InvalidDeclaration,
+    UnexpectedType,
+    UnimplementedType,
+    MissingExpectedType,
+    UnexpectedEndOfFile,
+    NullType,
+    OutOfMemory,
+};

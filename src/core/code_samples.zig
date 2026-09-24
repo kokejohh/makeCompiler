@@ -19,11 +19,11 @@ pub const RETURN_10_PLUS_10 =
 
 pub const HELLO_WORLD =
     \\func void main() {
-    \\  println("Hello world!");
+    \\  //println("Hello world!");
     \\  return 0;
     \\}
 ;
 
 pub const GLOBAL =
-    \\i32 number = 10;
+    \\i32 number = 9;
 ;

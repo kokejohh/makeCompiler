@@ -82,7 +82,7 @@ pub fn isInteger(input: []const u8) bool {
         if (isDigit(char) == false) {
             return false;
         }
-    } else false;
+    } else true;
 }
 
 pub fn isDecimal(input: []const u8) bool {

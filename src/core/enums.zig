@@ -73,3 +73,65 @@ pub const TokenType = enum {
     OrOr,
     NA,
 };
+
+pub const ASTNodeType = enum {
+    Invalid,
+    Comment,
+
+    Return,
+    Break,
+    Continue,
+    Print,
+    Println,
+
+    IntegerLiteral,
+    FloatLiteral,
+    StringLiteral,
+    CharLiteral,
+    BoolLiteral,
+
+    Minus,
+    Reference,
+    DereferenceAssignment,
+
+    FunctionBody,
+    ForBody,
+    ElseBody,
+    IfBody,
+    WhileBody,
+
+    ArrayDeclaration,
+    PointerDeclaration,
+    FunctionDeclaration,
+    Declaration,
+
+    FunctionCall,
+
+    ArrayGroup,
+    ArrayElement,
+    ArrayAccess,
+    Array,
+
+    PrintExpression,
+    BinaryExpression,
+    ReturnExpression,
+    BoolExpression,
+    BoolComparison,
+
+    VarType,
+    Pointer,
+    ReturnType,
+    Const,
+    Parameter,
+    Parameters,
+
+    StructVariable,
+
+    IfStatement,
+    WhileLoop,
+    ForLoop,
+    Else,
+
+    Identifier,
+    Assignment,
+};
