@@ -4,22 +4,22 @@ const enum_script = @import("../core/enums.zig");
 const error_script = @import("../core/errors.zig");
 const debugging_script = @import("../debugging/debugging.zig");
 const ast_integer_script = @import("ast_integers.zig");
+const ast_function_script = @import("ast_functions.zig");
 
 const Token = struct_script.Token;
+const TokenType = enum_script.TokenType;
 const ASTData = struct_script.ASTData;
 const ASTNode = struct_script.ASTNode;
-const TokenType = enum_script.TokenType;
 const ASTError = error_script.ASTError;
 
 pub fn buildASTs(allocator: *std.mem.Allocator, token_list: *const std.ArrayList(Token), code: []const u8) !*std.ArrayList(*ASTNode) {
-    std.debug.print("Format\n", .{});
-    _ = code;
+    std.debug.print("\tFormatting\t\t\t", .{});
 
-    const ast_node: *std.ArrayList(*ASTNode) = try allocator.*.create(std.ArrayList(*ASTNode));
-    ast_node.* = try std.ArrayList(*ASTNode).initCapacity(allocator.*, 0);
+    const ast_nodes: *std.ArrayList(*ASTNode) = try allocator.*.create(std.ArrayList(*ASTNode));
+    ast_nodes.* = try std.ArrayList(*ASTNode).initCapacity(allocator.*, 0);
 
     var ast_data = ASTData{
-        .ast_node = ast_node,
+        .ast_nodes = ast_nodes,
         .token_index = 0,
         .token_list = token_list,
     };
@@ -30,7 +30,7 @@ pub fn buildASTs(allocator: *std.mem.Allocator, token_list: *const std.ArrayList
 
         processGlobalTokenAST(allocator, &ast_data, false) catch |err| {
             std.debug.print("Error\n", .{});
-            //try debugging_script.printASTError(allocator, ast_data, code);
+            try debugging_script.printASTError(allocator, ast_data, code);
             return err;
         };
 
@@ -41,7 +41,7 @@ pub fn buildASTs(allocator: *std.mem.Allocator, token_list: *const std.ArrayList
 
     std.debug.print("Done\n", .{});
 
-    return ast_node;
+    return ast_nodes;
 }
 
 fn processGlobalTokenAST(allocator: *std.mem.Allocator, ast_data: *ASTData, is_const: bool) !void {
@@ -56,14 +56,14 @@ fn processGlobalTokenAST(allocator: *std.mem.Allocator, ast_data: *ASTData, is_c
         },
         TokenType.i32 => {
             const declaration_node: *ASTNode = try ast_integer_script.processIntDeclaration(allocator, ast_data, first_token, true, is_const);
-            try ast_data.ast_node.append(allocator.*, declaration_node);
+            try ast_data.ast_nodes.append(allocator.*, declaration_node);
         },
         TokenType.Multiply => {
             //const pointer_node: *ASTNode = try ast_pointer_script.processPointerDeclaration(ast_data, first_token, true, is);
-            //try ast_data.ast_node.append(allocator.*, pointer_node);
+            //try ast_data.ast_nodes.append(allocator.*, pointer_node);
         },
         TokenType.Func => {
-            //try ast_function_script.processFunctionDeclaration(allocator, ast_data);
+            try ast_function_script.processFunctionDeclaration(allocator, ast_data);
         },
         else => {
             ast_data.error_detail = "unimplemented type in ast";

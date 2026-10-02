@@ -4,6 +4,7 @@ const parse_script = @import("parse/parses.zig");
 const code_sample_script = @import("core/code_samples.zig");
 const debugging_script = @import("debugging/debugging.zig");
 const ast_script = @import("format/ast.zig");
+const llvm_convert_script = @import("convert/llvm_convert.zig");
 
 const Token = struct_script.Token;
 const ASTNode = struct_script.ASTNode;
@@ -23,19 +24,29 @@ fn convertCode(code: []const u8) void {
         std.debug.print("Error {}\n", .{err});
         return;
     };
-    debugging_script.printTokens(token_list);
 
     const ast_nodes: *std.ArrayList(*ASTNode) = ast_script.buildASTs(&arena_allocator, token_list, code) catch |err| {
         std.debug.print("\tError {}\n", .{err});
         debugging_script.printTokens(token_list);
         return;
     };
-    debugging_script.printASTNodes(&arena_allocator, ast_nodes) catch return;
+
+    llvm_convert_script.convert(arena_allocator, ast_nodes, code) catch |err| {
+        std.debug.print("\tError {}\n", .{err});
+        debugging_script.printTokens(token_list);
+        return;
+    };
+
+    debugging_script.printTokens(token_list);
+
+    debugging_script.printASTNodes(arena_allocator, ast_nodes) catch |err| {
+        std.debug.print("\tError {}\n", .{err});
+    };
 }
 pub fn main() !void {
-    //convertCode(code_sample_script.RETURN_ZERO);
+    convertCode(code_sample_script.RETURN_ZERO);
     //convertCode(code_sample_script.RETURN_ZERO_WITH_INT);
     //convertCode(code_sample_script.RETURN_10_PLUS_10);
     //convertCode(code_sample_script.HELLO_WORLD);
-    convertCode(code_sample_script.GLOBAL);
+    //convertCode(code_sample_script.GLOBAL);
 }

@@ -16,3 +16,12 @@ pub const ASTError = error{
     NullType,
     OutOfMemory,
 };
+
+pub const ConvertError = error{
+    NodeIsNull,
+    NoASTNodes,
+    OutOfMemory,
+    UnimplementedNodeType,
+    InvalidReturnType,
+    InvalidNodeType,
+};

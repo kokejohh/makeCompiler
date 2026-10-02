@@ -23,6 +23,16 @@ pub fn getNextToken(ast_data: *ASTData) !Token {
     return ast_data.token_list.items[ast_data.token_index];
 }
 
+pub fn isTypeToken(token: Token) bool {
+    if (isVarType(token.type) == true) {
+        return true;
+    }
+    if (token.type == TokenType.Identifier) {
+        return true;
+    }
+    return false;
+}
+
 pub fn isBinaryOperator(token_type: TokenType) bool {
     return token_type == TokenType.Plus or
         token_type == TokenType.Minus or
@@ -43,6 +53,25 @@ pub fn isBinaryOperatorBool(token_type: TokenType) bool {
         token_type == TokenType.GreaterThanEquals or
         token_type == TokenType.EqualsEquals or
         token_type == TokenType.NotEquals;
+}
+
+pub fn isVarType(token_type: TokenType) bool {
+    return token_type == TokenType.Bool or
+        token_type == TokenType.Char or
+        token_type == TokenType.Int or
+        token_type == TokenType.f32 or
+        token_type == TokenType.f64 or
+        token_type == TokenType.i16 or
+        token_type == TokenType.i32 or
+        token_type == TokenType.i64 or
+        token_type == TokenType.i8 or
+        token_type == TokenType.u16 or
+        token_type == TokenType.u32 or
+        token_type == TokenType.u64 or
+        token_type == TokenType.u8 or
+        token_type == TokenType.Usize or
+        token_type == TokenType.String or
+        token_type == TokenType.Void;
 }
 
 pub fn getPrecedenceInt(token_type: TokenType) usize {

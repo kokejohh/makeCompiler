@@ -25,5 +25,5 @@ pub const HELLO_WORLD =
 ;
 
 pub const GLOBAL =
-    \\i32 number = 9;
+    \\i32 number = 10;
 ;
