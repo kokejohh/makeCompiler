@@ -10,7 +10,7 @@ const ParseData = struct_script.ParseData;
 const ParseError = error_script.ParseError;
 
 pub fn parseToTokens(allocator: *std.mem.Allocator, code: []const u8) !*std.ArrayList(Token) {
-    //std.debug.print("\t{s}Parsing{s}\t\t\t\t", .{ printing_script.GREY, printing_script.RESET });
+    std.debug.print("\tParsing\t\t\t\t", .{});
 
     const token_list = try allocator.create(std.ArrayList(Token));
     //token_list.* = try std.ArrayList(Token).initCapacity(allocator.*, 0);
@@ -29,7 +29,7 @@ pub fn parseToTokens(allocator: *std.mem.Allocator, code: []const u8) !*std.Arra
     while (parse_data.character_index < STRING_LENGTH) {
         try processCharacter(allocator, &parse_data);
     }
-    //std.debug.print("{s}Done{s}\n", .{ printing.CYAN, printing_script.RESET });
+    std.debug.print("Done\n", .{});
     return token_list;
 }
 

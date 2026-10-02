@@ -31,16 +31,16 @@ fn convertCode(code: []const u8) void {
         return;
     };
 
-    llvm_convert_script.convert(arena_allocator, ast_nodes, code) catch |err| {
-        std.debug.print("\tError {}\n", .{err});
-        debugging_script.printTokens(token_list);
-        return;
-    };
-
     debugging_script.printTokens(token_list);
 
     debugging_script.printASTNodes(arena_allocator, ast_nodes) catch |err| {
         std.debug.print("\tError {}\n", .{err});
+    };
+
+    llvm_convert_script.convert(arena_allocator, ast_nodes, code) catch |err| {
+        std.debug.print("\tError {}\n", .{err});
+        debugging_script.printTokens(token_list);
+        return;
     };
 }
 pub fn main() !void {
